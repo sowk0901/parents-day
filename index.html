@@ -1,42 +1,49 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <title>어버이날 카드</title>
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: linear-gradient(to bottom, #fdf6e3, #ffe4e1);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: 'Nanum Pen Script', cursive;
-      text-align: center;
-    }
-    .container {
-      cursor: pointer;
-    }
-    img {
-      width: 400px;
-      border-radius: 12px;
-      transition: transform 0.3s;
-    }
-    img:hover {
-      transform: scale(1.05);
-    }
-    p {
-      font-size: 2em;
-      margin-top: 10px;
-      color: #444;
-    }
-  </style>
-  <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
-</head>
-<body>
-  <div class="container" onclick="location.href='gallery.html'">
-    <img src="open_card.png" alt="카네이션 상자">
-    <p>클릭하세요!</p>
-  </div>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>어버이날 카드</title>
+    <style>
+      body {
+        margin: 0;
+        height: 100vh;
+        background: #fffaf0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Nanum Pen Script", cursive;
+        text-align: center;
+      }
+      .container {
+        cursor: pointer;
+      }
+      img {
+        width: 400px;
+        border-radius: 12px;
+        transition: transform 0.3s;
+      }
+      img:hover {
+        transform: scale(1.05);
+      }
+    </style>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container" onclick="location.href='gallery.html'">
+      <img src="open_card.png" alt="카네이션 상자" />
+      <p
+        style="
+          text-align: center;
+          font-size: 2em;
+          margin-top: 10px;
+          color: #444;
+        "
+      >
+        클릭하세요!
+      </p>
+    </div>
+  </body>
 </html>

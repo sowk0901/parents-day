@@ -1,163 +1,559 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>추억 갤러리</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 40px 20px;
-      background: #1a1a2e;
-      color: #fff;
-      font-family: 'Nanum Pen Script', cursive;
-    }
-    h1 {
-      text-align: center;
-      font-size: 2.8em;
-      margin-bottom: 30px;
-    }
-    .gallery {
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
-      align-items: center;
-    }
-    .card {
-      width: fit-content;
-      max-width: 90vw;
-      margin: 0 auto;
-      padding: 0 20vw;
-      perspective: 1000px;
-      cursor: pointer;
-    }
-    .inner {
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.8s;
-      transform-style: preserve-3d;
-      position: relative;
-    }
-    .card.flipped .inner {
-      transform: rotateY(180deg);
-    }
-    .front, .back {
-      display: block;
-      width: 100%;
-      backface-visibility: hidden;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.3);
-      box-sizing: border-box;
-    }
-    .front img {
-      width: 100%;
-      height: auto;
-      object-fit: contain;
-      border-radius: 16px;
-      filter: brightness(0.95);
-    }
-    .front::after {
-      content: "클릭해서 코멘트 보기";
-      position: absolute;
-      bottom: 8px;
-      width: 100%;
-      color: #fff;
-      font-size: 1em;
-      text-align: center;
-      text-shadow: 0 0 5px rgba(0,0,0,0.6);
-    }
-    .front {
-      transform: rotateY(0deg);
-    }
-    .back {
-      transform: rotateY(180deg);
-      position: absolute;
-      top: 0;
-      left: 0;
-      background-color: #fffaf0;
-      color: #333;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 20px;
-      font-size: clamp(1.2em, 2vw, 1.5em);
-      line-height: 1.6;
-      width: 100%;
-      height: 100%;
-    }
-    .footer-card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
-      margin-top: 40px;
-    }
-    .row {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-    }
-    .row .card {
-      width: min(200px, 40vw);
-    }
-  </style>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      document.body.addEventListener("click", function (e) {
-        const card = e.target.closest(".card");
-        if (card) {
-          card.classList.toggle("flipped");
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>추억 갤러리</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 40px 20px;
+        background: #fffaf0;
+        color: #333;
+        font-family: "Nanum Pen Script", cursive;
+      }
+      h1 {
+        text-align: center;
+        font-size: 3em;
+        margin-bottom: 30px;
+      }
+      .gallery {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        align-items: center;
+      }
+      .card {
+        width: fit-content;
+        max-width: 90vw;
+        margin: 0 auto;
+        padding: 0 20vw;
+        perspective: 1000px;
+        cursor: pointer;
+      }
+      .inner {
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+        position: relative;
+      }
+      .card.flipped .inner {
+        transform: rotateY(180deg);
+      }
+      .front,
+      .back {
+        display: block;
+        width: 100%;
+        backface-visibility: hidden;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+        box-sizing: border-box;
+      }
+      .front img {
+        display: block;
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+      }
+
+      .front::after {
+        content: "클릭!";
+        position: absolute;
+        bottom: 8px;
+        width: 100%;
+        color: #fff;
+        font-size: 2em;
+        text-align: center;
+        text-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+      }
+      /* 특정 카드에만 안내 문구 제거 */
+      .no-after .front::after {
+        content: none;
+      }
+
+      .front {
+        transform: rotateY(0deg);
+      }
+
+      .back {
+        transform: rotateY(180deg);
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: #fffaf0;
+        color: #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 20px;
+        font-size: clamp(1.2em, 2vw, 1.5em);
+        line-height: 1.6;
+        width: 100%;
+        height: 100%;
+      }
+
+      .footer-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        margin-top: 40px;
+      }
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+      }
+      .row .card {
+        width: min(200px, 40vw);
+      }
+
+      .hover-scale .inner {
+        transform: none;
+        transition: transform 0.4s ease;
+      }
+
+      .hover-scale:hover .inner {
+        transform: scale(1.05);
+      }
+
+      /* 그림자 제거 전용 카드 */
+      .card.no-shadow .front,
+      .card.no-shadow .back {
+        box-shadow: none !important;
+      }
+
+      .bg-blur {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.4;
+        filter: blur(3px);
+        z-index: 0;
+      }
+
+      .message {
+        position: relative;
+        z-index: 1;
+        padding: 20px;
+        color: #fff;
+        font-size: clamp(1.2em, 2vw, 1.5em);
+        line-height: 1.6;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+      }
+
+      @keyframes shake {
+        0% {
+          transform: rotate(0deg);
         }
+        20% {
+          transform: rotate(3deg);
+        }
+        40% {
+          transform: rotate(-3deg);
+        }
+        60% {
+          transform: rotate(2deg);
+        }
+        80% {
+          transform: rotate(-2deg);
+        }
+        100% {
+          transform: rotate(0deg);
+        }
+      }
+
+      .shake-on-hover:hover {
+        animation: shake 0.5s ease;
+      }
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        document.body.addEventListener("click", function (e) {
+          const card = e.target.closest(".card");
+          if (card && !card.classList.contains("hover-scale")) {
+            card.classList.toggle("flipped");
+          }
+        });
+
+        // back에 흐린 이미지 자동 추가
+        document.querySelectorAll(".card").forEach((card) => {
+          const img = card.querySelector(".front img");
+          const back = card.querySelector(".back");
+          const message = back.innerHTML;
+          if (img && back && !back.classList.contains("no-blur")) {
+            back.innerHTML = `
+              <img class="bg-blur" src="${img.src}" alt="blurred" />
+              <div class="message">${message}</div>
+            `;
+          }
+        });
       });
-    });
-  </script>
-  <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
-</head>
-<body>
-  <h1>사랑하는 엄마, 아빠께</h1>
-  <div class="gallery">
-    <div class="card"><div class="inner">
-      <div class="front"><img src="fa_vac1.jpg" alt="photo1"></div>
-      <div class="back">가족여행 첫날, 그 따뜻한 저녁 기억나요?</div>
-    </div></div>
-
-    <div class="card"><div class="inner">
-      <div class="front"><img src="fa_vac2.jpg" alt="photo2"></div>
-      <div class="back">엄마가 활짝 웃던 그날, 너무 예뻤어요.</div>
-    </div></div>
-
-    <div class="card"><div class="inner">
-      <div class="front"><img src="fa_vac3.jpg" alt="photo3"></div>
-      <div class="back">아빠랑 산책하던 그 밤, 잊지 못해요.</div>
-    </div></div>
-
-    <div class="footer-card">
-      <p style="font-size: 2em;">편지가 왔어요!</p>
-      <div class="row">
-        <div class="card"><div class="inner">
-          <div class="front"><img src="chanhee.jpg" alt="me"></div>
-          <div class="back">엄마 아빠,<br>항상 곁에 있어줘서 고마워요.<br>사랑해요!</div>
-        </div></div>
-
-        <div class="card"><div class="inner">
-          <div class="front"><img src="jihyuk.jpg" alt="brother"></div>
-          <div class="back">부모님께,<br>항상 든든한 존재가 되어 주셔서 감사합니다.<br>사랑합니다!</div>
-        </div></div>
-      </div>
-    </div>
-    <div class="card" onclick="location.href='index.html'" style="margin-top: 40px;">
-      <div class="inner">
-        <div class="front">
-          <img src="close.png" alt="다시 열기" style="border-radius: 16px;">
-        </div>
-        <div class="back">
-          다시 선물 상자를 열어볼까요?
+    </script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <h1>사랑하는 아빠, 엄마께</h1>
+    <div class="gallery">
+      <div class="card">
+        <div class="inner">
+          <div class="front"><img src="image/photo1.jpeg" alt="photo1" /></div>
+          <div class="back">몇 살 때 엄마일까?😍</div>
         </div>
       </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front"><img src="image/photo2.jpeg" alt="photo2" /></div>
+          <div class="back">
+            고등학생 때 아빠👨‍🎓, 더 어릴 때도 궁금하다
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front"><img src="image/photo3.jpeg" alt="photo3" /></div>
+          <div class="back">우리 은근 닮았는데 ~.~</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front"><img src="image/photo4.jpeg" alt="photo4" /></div>
+          <div class="back">20살 때 인가봐🫢</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front"><img src="image/photo5.jpeg" alt="photo5" /></div>
+          <div class="back">두 남,녀의 만남과 동시에 결혼👰‍♀️💍🤵‍♂️</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front"><img src="image/photo6.jpeg" alt="photo6" /></div>
+          <div class="back">곱다는 단어의 대명사로 인정합니다</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front"><img src="image/photo7.jpeg" alt="photo7" /></div>
+          <div class="back">너무 아름다워요💕</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front"><img src="image/photo8.jpeg" alt="photo8" /></div>
+          <div class="back">나도 이때를 직관하고 싶어</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front"><img src="image/photo9.jpeg" alt="photo9" /></div>
+          <div class="back">제주도 신혼 여행일까?</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="image/photo10.jpeg" alt="photo10" />
+          </div>
+          <div class="back">풋풋한 모습</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="image/photo11.jpeg" alt="photo11" />
+          </div>
+          <div class="back">브이~✌️</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="image/photo12.jpeg" alt="photo12" />
+          </div>
+          <div class="back">여긴 어디일까?</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="image/photo13.jpeg" alt="photo13" />
+          </div>
+          <div class="back">아빠의 사랑이 느껴지는 사진 📸 🎞️</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="image/photo14.jpeg" alt="photo14" />
+          </div>
+          <div class="back">목욕하는 오빠..</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="image/photo15.jpeg" alt="photo15" />
+          </div>
+          <div class="back">드디어 내가 나왔네!</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="image/photo16.jpeg" alt="photo16" />
+          </div>
+          <div class="back">그윽한 아빠 🤣</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="image/photo17.jpeg" alt="photo17" />
+          </div>
+          <div class="back">이게 첫 가족 사진일까? 완전 중국 그 자체 🇨🇳</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="image/photo18.jpeg" alt="photo18" />
+          </div>
+          <div class="back">비전트립이겠지 ~ ?</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="image/photo19.png" alt="photo19" />
+          </div>
+          <div class="back">한국와서 첫 가족 인생네컷 🤳</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="image/photo20.jpeg" alt="photo20" />
+          </div>
+          <div class="back">부천종합운동장 꽃 보러간 날 ~ 🌸</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="image/photo21.jpeg" alt="photo21" />
+          </div>
+          <div class="back">내가 제일 좋아하는 사진!</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="/image/photo22.jpeg" alt="photo22" />
+          </div>
+          <div class="back">ㅡ.ㅡ ;</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="image/photo23.jpeg" alt="photo23" />
+          </div>
+          <div class="back">태안 어느 카페에서...</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="image/photo24.jpeg" alt="photo24" />
+          </div>
+          <div class="back">자연스러운 분위기 좋아요~</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="image/photo25.jpeg" alt="photo25" />
+          </div>
+          <div class="back">소녀 감성 제대로잖아~</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="image/photo26.jpeg" alt="photo26" />
+          </div>
+          <div class="back">개인 사유지 해수욕장에서 😘 💋</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="image/photo27.jpeg" alt="photo27" />
+          </div>
+          <div class="back">내가 바라본 가족</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="image/photo28.jpeg" alt="photo28" />
+          </div>
+          <div class="back">신혼느낌 물씬 나네요~</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="image/photo29.jpeg" alt="photo29" />
+          </div>
+          <div class="back">오빠 빼고 선녀바위해수욕장 간 날!</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="image/photo30.jpeg" alt="photo30" />
+          </div>
+          <div class="back">충남 보령 대천해수욕장! 내가 본 엄마 아빠</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="image/photo31.jpeg" alt="photo31" />
+          </div>
+          <div class="back">아빠가 찍은 우리 ~</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="image/photo32.jpeg" alt="photo32" />
+          </div>
+          <div class="back">큰아빠 둘째 아들 결혼식에서 한 장 ~</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="image/photo33.png" alt="photo33" />
+          </div>
+          <div class="back">내 생일 기념 두번째 가족 인생네컷!</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="image/photo34.jpeg" alt="photo34" />
+          </div>
+          <div class="back">여수도 갔지~</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="image/photo35.jpeg" alt="photo35" />
+          </div>
+          <div class="back">환상의 짝꿍!</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="image/photo36.jpeg" alt="photo36" />
+          </div>
+          <div class="back">오동도에서 한 컷</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="inner">
+          <div class="front">
+            <img src="image/photo37.jpeg" alt="photo37" />
+          </div>
+          <div class="back">♥︎당신만을 영~원~히~ 사랑합니다!♥︎</div>
+        </div>
+      </div>
+
+
+      <div class="footer-card">
+        <div class="row">
+          <div class="card">
+            <div class="inner">
+              <div class="front"><img src="chanhee.jpg" alt="me" /></div>
+              <div class="back">
+                이번엔 찬희가 뭐라 했을까?!
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="inner">
+              <div class="front"><img src="jihyuk.jpg" alt="brother" /></div>
+              <div class="back">
+                지혁이는 뭐라 했을까!?
+              </div>
+            </div>
+          </div>
+        </div>
+        <img
+          src="letter.png"
+          alt="편지지"
+          style="width: 200px; height: auto"
+          class="shake-on-hover"
+          onclick="location.href='letter.html'"
+        />
+        <p style="font-size: 2em; margin-top: 0px">편지가 왔어요!</p>
+      </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>
