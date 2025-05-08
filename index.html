@@ -2,34 +2,41 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>어버이날 선물</title>
+  <title>어버이날 카드</title>
   <style>
     body {
-      background: linear-gradient(to bottom right, #fffaf0, #ffe4e1);
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(to bottom, #fdf6e3, #ffe4e1);
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
       font-family: 'Nanum Pen Script', cursive;
-    }
-    .box {
       text-align: center;
+    }
+    .container {
       cursor: pointer;
     }
-    .box img {
-      width: 500px;
+    img {
+      width: 400px;
+      border-radius: 12px;
       transition: transform 0.3s;
     }
-    .box:hover img {
+    img:hover {
       transform: scale(1.05);
+    }
+    p {
+      font-size: 2em;
+      margin-top: 10px;
+      color: #444;
     }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="box" onclick="location.href='gallery.html'">
+  <div class="container" onclick="location.href='gallery.html'">
     <img src="carnation.jpg" alt="카네이션 상자">
-    <p>클릭해서 선물 상자를 열어보세요!</p>
+    <p>클릭하세요!</p>
   </div>
 </body>
 </html>
